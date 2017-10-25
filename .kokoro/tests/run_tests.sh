@@ -46,6 +46,9 @@ export GOOGLE_CLOUD_PROJECT=java-docs-samples-testing
 export PATH=/google-cloud-sdk/bin:$PATH
 source ${KOKORO_GFILE_DIR}/aws-secrets.sh
 
+apt-get clean && apt-get update && apt-get install -y locales
+locale-gen en_US.UTF-8
+
 echo "******** Environment *********"
 env
 echo "******** mvn & Java *********"
@@ -66,7 +69,7 @@ gcloud config list
 
 echo "******** build everything ********"
 cd github/java-docs-samples
-mvn -B --fail-at-end clean verify -Dfile.encoding="UTF-16" \
+mvn -B --fail-at-end clean verify -Dfile.encoding=UTF-8 \
         -Dbigtable.projectID="${GOOGLE_CLOUD_PROJECT}" \
         -Dbigtable.instanceID=instance | \
      grep -E -v "(^\[INFO\] Download|^\[INFO\].*skipping)"

@@ -18,6 +18,10 @@ package com.example.cloud.translate.samples;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -68,7 +72,7 @@ public class TranslateTextTest {
 
   @Test public void testSupportedLanguagesTargetFrench() throws Exception {
     //Supported languages
-    List<String> languages = Arrays.asList(
+    Set<String> languages = new HashSet<>(Arrays.asList(
         "Afrikaans", "Albanais", "Allemand", "Amharique", "Anglais", "Arabe", "Arménien",
         "Azéri", "Basque", "Bengali", "Biélorusse", "Birman", "Bosniaque", "Bulgare", "Catalan",
         "Cebuano", "Chichewa", "Chinois (simplifié)", "Chinois (traditionnel)", "Cingalais",
@@ -82,12 +86,13 @@ public class TranslateTextTest {
         "Ouzbek", "Pachtô", "Panjabi", "Persan", "Polonais", "Portugais", "Roumain", "Russe",
         "Samoan", "Serbe", "Sesotho", "Shona", "Sindhî", "Slovaque", "Slovène", "Somali",
         "Soundanais", "Suédois", "Swahili", "Tadjik", "Tagalog", "Tamoul", "Tchèque", "Telugu",
-        "Thaï", "Turc", "Ukrainien", "Urdu", "Vietnamien", "Xhosa", "Yiddish", "Yorouba","Zoulou");
+        "Thaï", "Turc", "Ukrainien", "Urdu", "Vietnamien", "Xhosa", "Yiddish", "Yorouba","Zoulou"));
 
     // Arrange
     ByteArrayOutputStream bout = new ByteArrayOutputStream();
-    PrintStream out = new PrintStream(bout);
-
+    PrintStream out = new PrintStream(bout, true, "UTF-8");
+    // Act
+    //Set<String> supported = TranslateText.getSupportedLanguages(Optional.of("fr"));
     // Act
     TranslateText.displaySupportedLanguages(out, Optional.of("fr"));
 
@@ -96,6 +101,14 @@ public class TranslateTextTest {
     for (String language : languages) {
       assertThat(got).contains(language);
     }
+    /*
+    for (String language : languages) {
+      if(!supported.contains(language)){
+        System.out.println("Language is not in supported! --> " + language);
+      }
+      assertThat(supported).contains(language);
+    }
+    */
   }
 
   @Test public void testEnglishLangDetection() throws Exception {

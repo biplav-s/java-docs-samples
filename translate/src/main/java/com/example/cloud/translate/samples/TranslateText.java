@@ -26,8 +26,10 @@ import com.google.cloud.translate.Translation;
 import com.google.common.collect.ImmutableList;
 
 import java.io.PrintStream;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class TranslateText {
   /**
@@ -109,6 +111,23 @@ public class TranslateText {
     out.printf("Source Text:\n\tLang: %s, Text: %s\n", sourceLang, sourceText);
     out.printf("TranslatedText:\n\tLang: %s, Text: %s\n", targetLang,
         translation.getTranslatedText());
+  }
+
+  /**
+   * Displays a list of supported languages and codes.
+   *
+   * @param out print stream
+   * @param tgtLang optional target language
+   */
+  public static Set<String> getSupportedLanguages(Optional<String> tgtLang) {
+    Translate translate = createTranslateService();
+    LanguageListOption target = LanguageListOption.targetLanguage(tgtLang.orElse("en"));
+    List<Language> languages = translate.listSupportedLanguages(target);
+    Set<String> languagesSet = new HashSet<>();
+    for (Language language : languages) {
+      languagesSet.add(language.getName());
+    }
+    return languagesSet;
   }
 
   /**
