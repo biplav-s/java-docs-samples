@@ -86,7 +86,7 @@ public class TranslateTextTest {
 
     // Arrange
     ByteArrayOutputStream bout = new ByteArrayOutputStream();
-    PrintStream out = new PrintStream(bout);
+    PrintStream out = new PrintStream(bout, true, "UTF-8");
 
     // Act
     TranslateText.displaySupportedLanguages(out, Optional.of("fr"));
